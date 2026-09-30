@@ -423,7 +423,7 @@
             const eventNames = Array.from(events).map(event => event.value).join(', ');
             
             const recipientEmail = 'dbarg1@gmail.com'; // Fixed email
-            const subject = "Danya's Party RSVP: ${name}";
+            const subject = `Danya's Party RSVP: ${name}`;
             const body = `Hi Danya,\n\nI'm ${name} and I'll be attending: ${eventNames}`;
             
             window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
