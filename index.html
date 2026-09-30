@@ -264,7 +264,7 @@
     </style>
 </head>
 <body>
-    <audio controls loop>
+    <audio id="bgMusic" loop>
         <source src="Gulyanka.mp3" type="audio/mpeg">
     </audio>
     <!-- Moving Background Icons -->
@@ -296,7 +296,7 @@
                 </div>
 
                 <div class="button-group">
-                    <button onclick="openEmail()&closeWindow(this)">Read Mail</button>
+                    <button onclick="openEmail(); playMusic(); closeWindow(this)">Read Mail</button>
                     <button onclick="showHourglassAndReopen(this)">Later</button>
                 </div>
             </div>
@@ -396,6 +396,11 @@
         function openEmail() {
             const emailWindow = document.getElementById('emailWindow');
             emailWindow.style.display = 'block';
+        }
+
+        function playMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.play();
         }
 
         function openGoodbye() {
