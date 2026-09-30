@@ -3,115 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Awesome Website</title>
+    <title>You've Got Mail!</title>
+    <link rel="stylesheet" href="https://unpkg.com/xp.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+            background: teal;
+            font-family: 'MS Sans Serif', Arial, sans-serif;
+            font-size: 16px;
         }
 
         .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
+            position: relative;
             width: 100%;
-            padding: 60px 40px;
+            max-width: 700px;
+        }
+
+        .notification-window {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mail-icon {
+            font-size: 6em;
             text-align: center;
+            margin: 30px 0;
+            animation: bounce 2s infinite;
         }
 
-        h1 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 2.5em;
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
         }
 
-        p {
-            color: #666;
-            margin-bottom: 15px;
+        .message-text {
+            font-size: 1.8em;
+            color: #000080;
+            font-weight: bold;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .button-group button {
+            min-width: 120px;
+            font-size: 1.1em;
+            padding: 8px 16px;
+        }
+
+        .secondary-window {
+            margin-top: 40px;
+            animation: slideIn 1s ease-out 0.5s backwards;
+        }
+
+        .email-preview {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #dfdfdf #808080 #808080 #dfdfdf;
+            padding: 20px;
+            margin: 15px 0;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .email-preview strong {
+            color: #000080;
+            font-size: 1.2em;
+        }
+
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to right, #000080, #1084d7);
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            color: white;
+            font-size: 1em;
+        }
+
+
+        .clock {
+            margin-left: auto;
+            margin-right: 8px;
+            font-weight: bold;
             font-size: 1.1em;
         }
 
-        .buttons {
+        fieldset {
+            font-size: 1.1em !important;
+        }
+
+        legend {
+            font-size: 1.15em !important;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            font-size: 1em !important;
+            padding: 6px;
+        }
+
+        label {
+            font-size: 1.05em;
+        }
+
+        p {
+            font-size: 1.1em;
+        }
+
+        .hourglass-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
-            gap: 10px;
             justify-content: center;
-            margin-top: 30px;
-            flex-wrap: wrap;
+            align-items: center;
+            z-index: 9999;
         }
 
-        a {
-            display: inline-block;
-            padding: 12px 30px;
-            margin: 5px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-            font-weight: bold;
+        .hourglass {
+            font-size: 5em;
+            animation: spin 1s linear infinite;
         }
 
-        a:hover {
-            background: #764ba2;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .emoji {
-            font-size: 3em;
-            margin-bottom: 20px;
+        .moving-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
         }
 
-        footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #999;
-            font-size: 0.9em;
+        .moving-icon {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            opacity: 0.9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 40px 20px;
-            }
+        .icon1 {
+            animation: float1 20s linear infinite;
+        }
 
-            h1 {
-                font-size: 1.8em;
-            }
+        .icon2 {
+            animation: float2 25s linear infinite 2s;
+        }
 
-            p {
-                font-size: 1em;
-            }
+        .icon3 {
+            animation: float3 30s linear infinite 4s;
+        }
+
+        .icon4 {
+            animation: float4 22s linear infinite 1s;
+        }
+
+        .icon5 {
+            animation: float5 28s linear infinite 3s;
+        }
+
+        @keyframes float1 {
+            0% { transform: translate(-100px, -100px); }
+            100% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)); }
+        }
+
+        @keyframes float2 {
+            0% { transform: translate(calc(100vw + 50px), -50px); }
+            100% { transform: translate(-100px, calc(100vh + 50px)); }
+        }
+
+        @keyframes float3 {
+            0% { transform: translate(50vw, -100px); }
+            100% { transform: translate(-100px, calc(100vh + 100px)); }
+        }
+
+        @keyframes float4 {
+            0% { transform: translate(-100px, 50vh); }
+            100% { transform: translate(calc(100vw + 100px), -100px); }
+        }
+
+        @keyframes float5 {
+            0% { transform: translate(calc(100vw + 100px), 50vh); }
+            100% { transform: translate(-100px, -100px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 100;
+        }
+
+        .goodbye-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            max-width: 90vw;
+            z-index: 1000;
+            font-size: 1.4em;
+            padding: 40px;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .oops-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            max-width: 90vw;
+            z-index: 1000;
+            font-size: 1.4em;
+            padding: 40px;
+            text-align: center;
+            line-height: 1.8;
         }
     </style>
 </head>
 <body>
+    <!-- Moving Background Icons -->
+    <div class="moving-icons">
+        <div class="moving-icon icon1" style="background-image: url('file:///Users/daniel.barg/Downloads/WhatsApp%20Unknown%202026-09-29%20at%207.57.17%20PM/WhatsApp%20Image%202026-09-29%20at%206.28.25%20PM.jpeg');"></div>
+        <div class="moving-icon icon2" style="background-image: url('file:///Users/daniel.barg/Downloads/WhatsApp%20Unknown%202026-09-29%20at%207.57.17%20PM/WhatsApp%20Image%202026-09-29%20at%206.28.26%20PM%20(1).jpeg');"></div>
+        <div class="moving-icon icon3" style="background-image: url('file:///Users/daniel.barg/Downloads/WhatsApp%20Unknown%202026-09-29%20at%207.57.17%20PM/WhatsApp%20Image%202026-09-29%20at%206.28.26%20PM%20(2).jpeg');"></div>
+        <div class="moving-icon icon4" style="background-image: url('file:///Users/daniel.barg/Downloads/WhatsApp%20Unknown%202026-09-29%20at%207.57.17%20PM/WhatsApp%20Image%202026-09-29%20at%206.28.26%20PM%20(3).jpeg');"></div>
+        <div class="moving-icon icon5" style="background-image: url('file:///Users/daniel.barg/Downloads/WhatsApp%20Unknown%202026-09-29%20at%207.57.17%20PM/WhatsApp%20Image%202026-09-29%20at%206.28.26%20PM.jpeg');"></div>
+    </div>
     <div class="container">
-        <div class="emoji">🚀</div>
-        <h1>Welcome to Your Website!</h1>
-        <p>Congratulations! Your site is live and connected to your domain.</p>
-        <p>This is a simple, responsive template you can customize with your own content.</p>
-        
-        <div class="buttons">
-            <a href="#about">Learn More</a>
-            <a href="#contact">Get in Touch</a>
+        <!-- Mail Notification Pop-up -->
+        <div class="window notification-window" id="notificationWindow">
+            <div class="title-bar">
+                <div class="title-bar-text">📬 New Mail Notification</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" onclick="openOops()&closeWindow(this)"></button>
+                </div>
+            </div>
+            <div class="window-body">
+                <div class="mail-icon">📧</div>
+                <div class="message-text">You've Got Mail!</div>
+                <p style="text-align: center;">You have a new email message.</p>
+                
+                <div class="email-preview">
+                    <strong>From:</strong> Danya<br>
+                    <strong>Subject:</strong> Danya's 31st: You're Invited!<br>
+                    <strong>Time:</strong> Friday October 2
+                </div>
+
+                <div class="button-group">
+                    <button onclick="openEmail()&closeWindow(this)">Read Mail</button>
+                    <button onclick="showHourglassAndReopen(this)">Later</button>
+                </div>
+            </div>
         </div>
 
-        <footer>
-            <p>&copy; 2024 Your Name. All rights reserved.</p>
-        </footer>
+        <!-- Email Inbox Window (hidden by default) -->
+        <div class="window secondary-window" id="emailWindow" style="display: none;">
+            <div class="title-bar">
+                <div class="title-bar-text">📨 Inbox</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Minimize"></button>
+                    <button aria-label="Maximize"></button>
+                    <button aria-label="Close" onclick="openOops()&closeWindow(this)"></button>
+                </div>
+            </div>
+            <div class="window-body">
+                <div class="email-preview">
+                    <strong>From:</strong> Danya<br>
+                    <strong>Subject:</strong> Danya's 31st: You're Invited!<br>
+                    <strong>Date:</strong> Friday October 2<br><br>
+                    <strong>Message:</strong><br /><br />
+                    Here's my plan for the evening:
+                    
+                    <ul>
+                        <li>6pm : Sunset at <a href="https://maps.app.goo.gl/dbVZsFrAnGxnL6wj7" target="_blank">Charlotte Beach</a> in Williamsburg. What????? There's a beach in Williamsburg? Yes, there is! Located inside Marsha P. Johnson State Park, with sand imported from the Canary Islands, and water imported from the beautiful Jamaica Bay, join me to enjoy the sunset on the last truly hot day of the year (˃̣̣̥ᯅ˂̣̣̥) </li>
+                        <li>7:30pm: Dinner at <a href="https://maps.app.goo.gl/iQhCR9eKsT7XbJf27" target="_blank">While in Kathmandu</a> in Ridgewood - I saw this on YouTube Shorts and it looked gooooood. Just a short ride on the L from the beach to Seneca Ave.</li>
+                        <li>Post Dinner: Drinks and dancing at <a href="https://maps.app.goo.gl/3AqsEM3NJZkHbvpQA" target="_blank">TV Eye</a>, walking distance from the restaurant. Large dance floor and outdoor area allows for whatever vibe you want!</li>
+                    Starting at 11pm, there's a Donna Summer / disco party! FYI tickets are $10 in advance, $15 at the door. Here's the ticket site: <a href="https://wl.eventim.us/event/Love-2-Love/703527?afflky=TVEye" target="_blank">Love 2 Love</a>
+                    </ul>
+
+                If you're still reading, and you're wondering why there are pictures of me floating around. Well - I'm a very serious person and I went through the painstaking effort of finding some unserious photos of me doing the above activities.
+                <br />For the night, please take inspiration and wear something loud + unserious - my orange suit may make a return! 
+                <br />(This will be a Spread next year iykyk!)
+                </div>
+
+                <fieldset style="margin-top: 15px;">
+                    <legend>RSVP:</legend>
+                    <div class="field-row">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" placeholder="">
+                        
+                    </div>
+                    <br />
+                        I'll be there for the following events:
+                        <input type = "checkbox"
+                            id="sunset"
+                            name="events"
+                            value="sunset">
+                        <label for="sunset">Sunset</label>
+                        <input type = "checkbox"
+                            id="dinner"
+                            name="events"
+                            value="dinner">
+                        <label for="dinner">Dinner</label>
+                        <input type = "checkbox"
+                            id="dancing"
+                            name="events"
+                            value="dancing">
+                        <label for="dancing">Dancing</label>
+                </fieldset>
+
+                <div class="button-group" style="margin-top: 15px;">
+                    <button onclick="sendEmail()">Send</button>
+                    <button onclick="openGoodbye()&closeWindow(this)">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="window goodbye-window" id="goodbyeWindow" style="display: none;">
+        <div class="window-body" style="text-align: center;">
+            <p style="font-size: 1.3em; margin: 20px 0;">I may or may not have received that email, text me to follow up!</p>
+        </div>
+    </div>
+
+    <div class="window oops-window" id="oopsWindow" style="display: none;">
+        <div class="window-body">
+            <p style="font-size: 1.3em; margin: 20px 0;">Oops! I fucked up by leaving the close buttons in the windows. Reload the page please.</p>
+        </div>
+    </div>
+
+    <!-- Hourglass Overlay (hidden by default) -->
+    <div class="hourglass-overlay" id="hourglassOverlay" style="display: none;">
+        <div class="hourglass">⏳</div>
+    </div>
+    
+
+    <script>
+        function closeWindow(button) {
+            const window = button.closest('.window');
+            window.style.animation = 'slideIn 0.5s ease-out reverse';
+            setTimeout(() => {
+                window.style.display = 'none';
+            }, 500);
+        }
+
+        function openEmail() {
+            const emailWindow = document.getElementById('emailWindow');
+            emailWindow.style.display = 'block';
+        }
+
+        function openGoodbye() {
+            const goodbyeWindow = document.getElementById('goodbyeWindow');
+            goodbyeWindow.style.display = 'block';
+        }
+
+        function openOops() {
+            const oopsWindow = document.getElementById('oopsWindow');
+            oopsWindow.style.display = 'block';
+        }
+
+        // Update clock (optional)
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            clock.textContent = `${hours}:${minutes}`;
+        }
+
+        function sendEmail() {
+            const name = document.getElementById('name').value;
+            const events = document.querySelectorAll('input[name="events"]:checked');
+            const eventNames = Array.from(events).map(event => event.value).join(', ');
+            
+            const recipientEmail = 'dbarg1@gmail.com'; // Fixed email
+            const subject = "Danya's Party RSVP: ${name}";
+            const body = `Hi Danya,\n\nI'm ${name} and I'll be attending: ${eventNames}`;
+            
+            window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function showHourglassAndReopen(button) {
+            // Close the notification window
+            const window = button.closest('.window');
+            window.style.animation = 'slideIn 0.5s ease-out reverse';
+            
+            // Show hourglass
+            const hourglassOverlay = document.getElementById('hourglassOverlay');
+            hourglassOverlay.style.display = 'flex';
+
+            // After 2 seconds, hide hourglass and reopen the notification window
+            setTimeout(() => {
+                const notificationWindow = document.getElementById('notificationWindow');
+                notificationWindow.style.display = 'block';
+                notificationWindow.style.animation = 'slideIn 0.5s ease-out';
+                hourglassOverlay.style.display = 'none';
+            }, 2000);
+        }
+
+    </script>
 </body>
 </html>
